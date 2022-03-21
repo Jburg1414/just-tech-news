@@ -38,7 +38,7 @@ User.init(
         //  define a password column
         password: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
             validate: {
                 // this means the password must be at least 4 characters long
                 len: [4]
