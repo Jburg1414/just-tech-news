@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const {User, Post, Vote} = require('../../models');
+const {User, Post, Vote, Comment} = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
     // Access our User model and run .findAll() method)
     User.findAll({
-        // attributes: {exclude: ['password']}
+        attributes: {exclude: ['password']}
     })
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
@@ -22,7 +22,15 @@ router.get('/:id', (req, res) => {
         include: [
             {
                 model: Post,
-                attributes: ['id', 'title', 'post_url', 'create_at']
+                attributes: ['id', 'title', 'post_url', 'created_at']
+            },
+            {
+                model: Comment,
+                attributes: ['id', 'comment_text', 'created_at'],
+                include: {
+                    model: Post,
+                    attributes: ['title']
+                }
             },
             {
                 model: Post,
@@ -70,7 +78,6 @@ router.post('/login', (req, res) => {
             res.status(400).json({message: 'No user found with that email address!'});
             return;
         }
-        // res.json({user: dbUserData});
 
         // verify user
         const validPassword = dbUserData.checkPassword(req.body.password);
