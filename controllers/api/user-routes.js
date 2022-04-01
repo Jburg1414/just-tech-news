@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const { rearg } = require('lodash');
 const {User, Post, Vote, Comment} = require('../../models');
 
 // GET /api/users
@@ -23,11 +22,11 @@ router.get('/:id', (req, res) => {
         include: [
             {
                 model: Post,
-                attributes: ['id', 'title', 'post_url', 'createdAt']
+                attributes: ['id', 'title', 'post_url', 'created_at']
             },
             {
                 model: Comment,
-                attributes: ['id', 'comment_text', 'createdAt'],
+                attributes: ['id', 'comment_text', 'created_at'],
                 include: {
                     model: Post,
                     attributes: ['title']
